@@ -133,9 +133,9 @@ country_event = {
 
     option = {
         name = wchess_events.2.a
-        var:wchess_challenged = {
-            clear_variable = THIS.wchess_challenger
+        var:wchess_player_challenged = {
+            clear_variable = THIS.wchess_player_challenger
         }
-        clear_variable = THIS.wchess_challenged
+        clear_variable = THIS.wchess_player_challenged
     }
 }

@@ -146,6 +146,10 @@ scripted_gui = {
                             }
                             set_temp_variable = {temp_wchess_check_en = @ACTIVATE}
                             wchess_get_piece_moves = yes
+                            add_to_temp_array = {
+                                array = temp_wchess_possible_moves
+                                value = 0
+                            }
                             clear_temp_array = temp_wchess_possible_moves
                             for_each_loop = {
                                     array = temp_wchess_highlights_array
@@ -300,10 +304,8 @@ scripted_gui = {
                             if = {
                                 limit = {
                                     NOT = {
-                                        OR = {
-                                            check_variable = {v = @B_KING}
-                                            check_variable = {v = @W_KING}
-                                        }
+                                        check_variable = {v = @B_KING}
+                                        check_variable = {v = @W_KING}
                                     }
                                     check_variable = {wchess_double_check = @ACTIVATE}
                                 }
@@ -321,10 +323,8 @@ scripted_gui = {
                                     check_variable = {wchess_check_piece_id > -1}
                                     # The king filter his own moves
                                     NOT = {
-                                        OR = {
-                                            check_variable = {v = @B_KING}
-                                            check_variable = {v = @W_KING}
-                                        }
+                                        check_variable = {v = @B_KING}
+                                        check_variable = {v = @W_KING}
                                     }
                                 }
 

@@ -187,22 +187,20 @@ wchess_generic_get_move = {
         while_loop_effect = {
             limit = {
                 NOT = {
-                    OR = {
-                        check_variable = {
-                            temp_x < 0
-                        }
-                        check_variable = {
-                            temp_x > 7
-                        }
-                        check_variable = {
-                            temp_y < 0
-                        }
-                        check_variable = {
-                            temp_y > 7
-                        }
-                        check_variable = {
-                            temp_wchess_break_flag = 1
-                        }
+                    check_variable = {
+                        temp_x < 0
+                    }
+                    check_variable = {
+                        temp_x > 7
+                    }
+                    check_variable = {
+                        temp_y < 0
+                    }
+                    check_variable = {
+                        temp_y > 7
+                    }
+                    check_variable = {
+                        temp_wchess_break_flag = 1
                     }
                 }
             }
@@ -1229,8 +1227,8 @@ wchess_switch_turn = {
         if = {
             limit = {
                 check_variable = {
-                    var = ROOT
-                    value = wchess_opponent
+                    var = wchess_opponent
+                    value = ROOT
                     compare = not_equals
                 }
             }
@@ -1479,22 +1477,20 @@ wchess_get_pinned_pieces = {
         while_loop_effect = {
             limit = {
                 NOT = {
-                    OR = {
-                        check_variable = {
-                            temp_x < 0
-                        }
-                        check_variable = {
-                            temp_x > 7
-                        }
-                        check_variable = {
-                            temp_y < 0
-                        }
-                        check_variable = {
-                            temp_y > 7
-                        }
-                        check_variable = {
-                            temp_wchess_piece_number > 1
-                        }
+                    check_variable = {
+                        temp_x < 0
+                    }
+                    check_variable = {
+                        temp_x > 7
+                    }
+                    check_variable = {
+                        temp_y < 0
+                    }
+                    check_variable = {
+                        temp_y > 7
+                    }
+                    check_variable = {
+                        temp_wchess_piece_number > 1
                     }
                 }
             }
@@ -1836,13 +1832,11 @@ wchess_checkmate_check = {
                 check_variable = {temp_wchess_checkmate_state = @ACTIVATE}
                 # Knight cannot be blocked -> Already checkmated
                 NOT = {
-                    OR = {
-                        check_variable = {
-                            temp_wchess_piece_array^temp_wchess_check_piece_index = @B_KNIGHT
-                        }
-                        check_variable = {
-                            temp_wchess_piece_array^temp_wchess_check_piece_index = @W_KNIGHT
-                        }
+                    check_variable = {
+                        temp_wchess_piece_array^temp_wchess_check_piece_index = @B_KNIGHT
+                    }
+                    check_variable = {
+                        temp_wchess_piece_array^temp_wchess_check_piece_index = @W_KNIGHT
                     }
                 }
             }
@@ -2003,11 +1997,9 @@ wchess_draw_material_check = {
         } else_if = {
             limit = {
                 NOT = {
-                    OR = {
-                        check_variable = {piece_value = @B_KING}
-                        check_variable = {piece_value = @W_KING}
-                        check_variable = {piece_value = @EMPTY}
-                    }
+                    check_variable = {piece_value = @B_KING}
+                    check_variable = {piece_value = @W_KING}
+                    check_variable = {piece_value = @EMPTY}
                 }
             }
 
@@ -2019,27 +2011,25 @@ wchess_draw_material_check = {
     if = {
         limit = {
             NOT = {
-                OR = {
-                    # King alone
-                    AND = {
-                        check_variable = {temp_wchess_black_bishop = -1}
-                        check_variable = {temp_wchess_white_bishop = -1}
-                        check_variable = {temp_wchess_blackwhite_knight = -1}
+                # King alone
+                AND = {
+                    check_variable = {temp_wchess_black_bishop = -1}
+                    check_variable = {temp_wchess_white_bishop = -1}
+                    check_variable = {temp_wchess_blackwhite_knight = -1}
+                }
+                # King versus bishop
+                AND = {
+                    OR = {
+                        check_variable = {temp_wchess_black_bishop > -1}
+                        check_variable = {temp_wchess_white_bishop > -1}
                     }
-                    # King versus bishop
-                    AND = {
-                        OR = {
-                            check_variable = {temp_wchess_black_bishop > -1}
-                            check_variable = {temp_wchess_white_bishop > -1}
-                        }
-                        check_variable = {temp_wchess_blackwhite_knight = -1}
-                    }
-                    # King versus knight
-                    AND = {
-                        check_variable = {temp_wchess_black_bishop = -1}
-                        check_variable = {temp_wchess_white_bishop = -1}
-                        check_variable = {temp_wchess_blackwhite_knight =  1}
-                    }
+                    check_variable = {temp_wchess_blackwhite_knight = -1}
+                }
+                # King versus knight
+                AND = {
+                    check_variable = {temp_wchess_black_bishop = -1}
+                    check_variable = {temp_wchess_white_bishop = -1}
+                    check_variable = {temp_wchess_blackwhite_knight =  1}
                 }
             }
         }

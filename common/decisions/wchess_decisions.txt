@@ -90,7 +90,6 @@ wchess_decision_categories = {
             NOT = {
                 has_country_flag = wchess_start_game
                 has_country_flag = wchess_in_chess_pool
-                has_country_flag = wchess_has_chanllenged
             }
         }
 
@@ -105,7 +104,6 @@ wchess_decision_categories = {
             has_country_flag = wchess_in_chess_pool
             NOT = {
                 has_country_flag = wchess_start_game
-                has_country_flag = wchess_chanllenged
             }
         }
 
@@ -120,16 +118,12 @@ wchess_decision_categories = {
             is_ai = no
             NOT = {
                 has_country_flag = wchess_start_game
-                has_country_flag = wchess_chanllenged
-                has_country_flag = wchess_has_chanllenged
             }
         }
 
         target_root_trigger = {
             NOT = {
                 has_country_flag = wchess_start_game
-                has_country_flag = wchess_chanllenged
-                has_country_flag = wchess_has_chanllenged
             }
         }
 
@@ -140,8 +134,6 @@ wchess_decision_categories = {
                 has_country_flag = wchess_in_chess_pool
                 NOT = {
                     has_country_flag = wchess_start_game
-                    has_country_flag = wchess_chanllenged
-                    has_country_flag = wchess_has_chanllenged
                 }
             }
         }
@@ -163,11 +155,8 @@ wchess_decision_categories = {
         }
         complete_effect = {
             every_country = {
-                clear_variable = THIS.wchess_challenged
-                clear_variable = THIS.wchess_challenger
-                clear_variable = THIS.wchess_shamed
-                clear_variable = THIS.wchess_has_shamed
-                clear_variable = THIS.wchess_start_game
+                clear_variable = THIS.wchess_player_challenged
+                clear_variable = THIS.wchess_player_challenger
                 clear_variable = THIS.wchess_color
                 clear_variable = THIS.wchess_opponent
                 clr_country_flag = wchess_start_game
