@@ -39,21 +39,7 @@ wchess_decision_categories = {
         }
 
         complete_effect = {
-            set_country_flag = wchess_start_game
-            set_country_flag = wchess_display_game
-
-            set_variable = {wchess_color = @WHITE}
-            set_variable = {wchess_opponent_color = @BLACK}
-            set_variable = {wchess_opponent = ROOT}
-            set_variable = {wchess_black_player = ROOT}
-            set_variable = {wchess_white_player = ROOT}
-            set_variable = {wchess_game_turn = @ACTIVATE}
-            set_variable = {wchess_play_state = @S_SELECTION}
-
-            set_variable = {wchess_display_draw_button = @ACTIVATE}
-
-            wchess_init_variables = yes
-            wchess_create_board = yes
+            country_event = wchess_events.3
         }
 
     }
@@ -143,9 +129,46 @@ wchess_decision_categories = {
                 set_variable = {wchess_player_challenged = FROM}
                 FROM = {
                     set_variable = {wchess_player_challenger = ROOT}
-                    country_event = wchess_events.1
                 }
             }
+            country_event = wchess_events.3
+        }
+    }
+
+    wchess_self_timer = {
+        allowed = {
+            always = no
+        }
+        is_good = no
+        days_mission_timeout = 0
+        available = {
+            custom_trigger_tooltip = {
+                tooltip = wchess_you_have_made_a_move
+                always = no
+            }
+        }
+        timeout_effect = {
+            custom_effect_tooltip = wchess_you_will_resign
+            hidden_effect = {
+                wchess_timeout = yes
+            }
+        }
+    }
+
+    wchess_opponent_timer = {
+        allowed = {
+            always = no
+        }
+        is_good = no
+        days_mission_timeout = 0
+        available = {
+            custom_trigger_tooltip = {
+                tooltip = wchess_opponent_has_made_a_move
+                always = no
+            }
+        }
+        timeout_effect = {
+            custom_effect_tooltip = wchess_opponent_will_resign
         }
     }
 

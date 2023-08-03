@@ -49,76 +49,14 @@ country_event = {
     option = {
         name = wchess_events.1.b
 
-        set_country_flag = wchess_start_game
-        set_country_flag = wchess_display_game
-
-        set_variable = {wchess_color = @BLACK}
-        set_variable = {wchess_opponent_color = @WHITE}
-        set_variable = {wchess_opponent = wchess_player_challenger}
-        set_variable = {wchess_black_player = ROOT}
-        set_variable = {wchess_white_player = wchess_player_challenger}
-        set_variable = {wchess_game_turn = @DEACTIVATE}
-        set_variable = {wchess_play_state = @S_SELECTION}
-
-        set_variable = {wchess_display_draw_button = @DEACTIVATE}
-
-        wchess_init_variables = yes
-        wchess_create_board = yes
-
-        var:wchess_opponent = {
-            set_country_flag = wchess_start_game
-            set_country_flag = wchess_display_game
-
-            set_variable = {wchess_color = @WHITE}
-            set_variable = {wchess_opponent_color = @BLACK}
-            set_variable = {wchess_opponent = wchess_player_challenged}
-            set_variable = {wchess_black_player = wchess_player_challenged}
-            set_variable = {wchess_white_player = THIS}
-            set_variable = {wchess_game_turn = @ACTIVATE}
-            set_variable = {wchess_play_state = @S_SELECTION}
-
-            set_variable = {wchess_display_draw_button = @ACTIVATE}
-
-            wchess_init_variables = yes
-            wchess_create_board = yes
-        }
+        set_temp_variable = {temp_wchess_init_color = @BLACK}
+        wchess_start_game_with_opponent = yes
     }
     option = {
         name = wchess_events.1.c
 
-        set_country_flag = wchess_start_game
-        set_country_flag = wchess_display_game
-
-        set_variable = {wchess_color = @WHITE}
-        set_variable = {wchess_opponent_color = @BLACK}
-        set_variable = {wchess_opponent = wchess_player_challenger}
-        set_variable = {wchess_black_player = wchess_player_challenger}
-        set_variable = {wchess_white_player = ROOT}
-        set_variable = {wchess_game_turn = @ACTIVATE}
-        set_variable = {wchess_play_state = @S_SELECTION}
-
-        set_variable = {wchess_display_draw_button = @ACTIVATE}
-
-        wchess_init_variables = yes
-        wchess_create_board = yes
-
-        var:wchess_opponent = {
-            set_country_flag = wchess_start_game
-            set_country_flag = wchess_display_game
-
-            set_variable = {wchess_color = @BLACK}
-            set_variable = {wchess_opponent_color = @WHITE}
-            set_variable = {wchess_opponent = wchess_player_challenged}
-            set_variable = {wchess_black_player = THIS}
-            set_variable = {wchess_white_player = wchess_player_challenged}
-            set_variable = {wchess_game_turn = @DEACTIVATE}
-            set_variable = {wchess_play_state = @S_SELECTION}
-
-            set_variable = {wchess_display_draw_button = @DEACTIVATE}
-
-            wchess_init_variables = yes
-            wchess_create_board = yes
-        }
+        set_temp_variable = {temp_wchess_init_color = @WHITE}
+        wchess_start_game_with_opponent = yes
     }
 }
 
@@ -137,5 +75,81 @@ country_event = {
             clear_variable = THIS.wchess_player_challenger
         }
         clear_variable = THIS.wchess_player_challenged
+    }
+}
+
+# Select time control (comes before other events)
+country_event = {
+    id = wchess_events.3
+    title = wchess_events.3.t
+    desc = wchess_events.3.desc
+
+    is_triggered_only = yes
+    timeout_days = 5
+
+    immediate = {
+        clr_country_flag = wchess_no_timer
+    }
+
+    # doing a total timer would need to be manual because we can't pause missions
+    option = {
+        name = wchess_events.3.a
+        set_variable = {THIS.wchess_days_per_move = 7}
+
+        if = {
+            limit = {
+                has_variable = wchess_player_challenged
+            }
+            var:wchess_player_challenged = {
+                country_event = wchess_events.1
+            }
+        } else = {
+            wchess_start_game_alone = yes
+        }
+    }
+    option = {
+        name = wchess_events.3.b
+        set_variable = {THIS.wchess_days_per_move = 15}
+
+        if = {
+            limit = {
+                has_variable = wchess_player_challenged
+            }
+            var:wchess_player_challenged = {
+                country_event = wchess_events.1
+            }
+        } else = {
+            wchess_start_game_alone = yes
+        }
+    }
+    option = {
+        name = wchess_events.3.c
+        set_variable = {THIS.wchess_days_per_move = 30}
+
+        if = {
+            limit = {
+                has_variable = wchess_player_challenged
+            }
+            var:wchess_player_challenged = {
+                country_event = wchess_events.1
+            }
+        } else = {
+            wchess_start_game_alone = yes
+        }
+    }
+    option = {
+        name = wchess_events.3.d
+        set_country_flag = wchess_no_timer
+
+        if = {
+            limit = {
+                has_variable = wchess_player_challenged
+            }
+            var:wchess_player_challenged = {
+                country_event = wchess_events.1
+            }
+        } else = {
+            wchess_start_game_alone = yes
+        }
     }
 }

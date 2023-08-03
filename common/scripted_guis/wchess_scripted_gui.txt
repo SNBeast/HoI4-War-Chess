@@ -836,31 +836,7 @@ scripted_gui = {
             }
 
             wchess_abandon_button_click = {
-
-                set_variable = {wchess_game_turn = @DEACTIVATE}
-                if = {
-                    limit = {
-                        check_variable = {wchess_opponent = ROOT}
-                    }
-
-                    if = {
-                        limit = {
-                            check_variable = {wchess_color = @WHITE}
-                        }
-
-                        set_variable = {wchess_victory_black = @ACTIVATE}
-                    } else = {
-                        set_variable = {wchess_victory_white = @ACTIVATE}
-                    }
-                } else = {
-                    set_variable = {wchess_defeated = @ACTIVATE}
-                    var:wchess_opponent = {
-                        set_variable = {wchess_winner = @ACTIVATE}
-                        set_variable = {wchess_game_turn = @DEACTIVATE}
-                        clear_array = wchess_highlights_array
-                        clear_array = wchess_halochecks_array
-                    }
-                }
+                wchess_resign = yes
             }
         }
 
@@ -990,14 +966,15 @@ scripted_gui = {
             has_country_flag = wchess_start_game
             has_country_flag = wchess_display_game
             OR = {
-                check_variable = {wchess_draw_stalemate = @ACTIVATE}
-                check_variable = {wchess_draw_50_moves  = @ACTIVATE}
-                check_variable = {wchess_draw_material  = @ACTIVATE}
-                check_variable = {wchess_draw_agreement = @ACTIVATE}
-                check_variable = {wchess_victory_white  = @ACTIVATE}
-                check_variable = {wchess_victory_black  = @ACTIVATE}
-                check_variable = {wchess_defeated       = @ACTIVATE}
-                check_variable = {wchess_winner         = @ACTIVATE}
+                check_variable = {wchess_draw_stalemate                = @ACTIVATE}
+                check_variable = {wchess_draw_50_moves                 = @ACTIVATE}
+                check_variable = {wchess_draw_material                 = @ACTIVATE}
+                check_variable = {wchess_draw_timeout_against_material = @ACTIVATE}
+                check_variable = {wchess_draw_agreement                = @ACTIVATE}
+                check_variable = {wchess_victory_white                 = @ACTIVATE}
+                check_variable = {wchess_victory_black                 = @ACTIVATE}
+                check_variable = {wchess_defeated                      = @ACTIVATE}
+                check_variable = {wchess_winner                        = @ACTIVATE}
             }
         }
 
@@ -1019,6 +996,10 @@ scripted_gui = {
 
             wchess_draw_material_background_visible = {
                 check_variable = {wchess_draw_material = @ACTIVATE}
+            }
+
+            wchess_draw_timeout_against_material_background_visible = {
+                check_variable = {wchess_draw_timeout_against_material = @ACTIVATE}
             }
 
             wchess_draw_agreement_background_visible = {
@@ -1052,14 +1033,15 @@ scripted_gui = {
             has_country_flag = wchess_start_game
             has_country_flag = wchess_display_game
             has_country_flag = wchess_draw_agreement_received
-            check_variable = {wchess_draw_stalemate = @DEACTIVATE}
-            check_variable = {wchess_draw_50_moves  = @DEACTIVATE}
-            check_variable = {wchess_draw_material  = @DEACTIVATE}
-            check_variable = {wchess_draw_agreement = @DEACTIVATE}
-            check_variable = {wchess_victory_white  = @DEACTIVATE}
-            check_variable = {wchess_victory_black  = @DEACTIVATE}
-            check_variable = {wchess_defeated       = @DEACTIVATE}
-            check_variable = {wchess_winner         = @DEACTIVATE}
+            check_variable = {wchess_draw_stalemate                = @DEACTIVATE}
+            check_variable = {wchess_draw_50_moves                 = @DEACTIVATE}
+            check_variable = {wchess_draw_material                 = @DEACTIVATE}
+            check_variable = {wchess_draw_timeout_against_material = @DEACTIVATE}
+            check_variable = {wchess_draw_agreement                = @DEACTIVATE}
+            check_variable = {wchess_victory_white                 = @DEACTIVATE}
+            check_variable = {wchess_victory_black                 = @DEACTIVATE}
+            check_variable = {wchess_defeated                      = @DEACTIVATE}
+            check_variable = {wchess_winner                        = @DEACTIVATE}
         }
 
         effects = {

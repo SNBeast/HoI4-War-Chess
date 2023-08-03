@@ -54,16 +54,17 @@ wchess_init_variables = {
     set_variable = {wchess_left_rook_moved_opponent  = 0}
     set_variable = {wchess_right_rook_moved_opponent = 0}
     set_variable = {wchess_check_piece_id = -1}
-    set_variable = {wchess_double_check   = @DEACTIVATE}
+    set_variable = {wchess_double_check                  = @DEACTIVATE}
 
-    set_variable = {wchess_draw_stalemate = @DEACTIVATE}
-    set_variable = {wchess_draw_50_moves  = @DEACTIVATE}
-    set_variable = {wchess_draw_agreement = @DEACTIVATE}
-    set_variable = {wchess_draw_material =  @DEACTIVATE}
-    set_variable = {wchess_victory_white  = @DEACTIVATE}
-    set_variable = {wchess_victory_black  = @DEACTIVATE}
-    set_variable = {wchess_defeated       = @DEACTIVATE}
-    set_variable = {wchess_winner         = @DEACTIVATE}
+    set_variable = {wchess_draw_stalemate                = @DEACTIVATE}
+    set_variable = {wchess_draw_50_moves                 = @DEACTIVATE}
+    set_variable = {wchess_draw_agreement                = @DEACTIVATE}
+    set_variable = {wchess_draw_material                 = @DEACTIVATE}
+    set_variable = {wchess_draw_timeout_against_material = @DEACTIVATE}
+    set_variable = {wchess_victory_white                 = @DEACTIVATE}
+    set_variable = {wchess_victory_black                 = @DEACTIVATE}
+    set_variable = {wchess_defeated                      = @DEACTIVATE}
+    set_variable = {wchess_winner                        = @DEACTIVATE}
     clr_country_flag = wchess_draw_agreement_received
 }
 
@@ -1274,6 +1275,7 @@ wchess_switch_turn = {
             check_variable = {wchess_draw_stalemate = @DEACTIVATE}
             check_variable = {wchess_draw_50_moves = @DEACTIVATE}
             check_variable = {wchess_draw_material = @DEACTIVATE}
+            check_variable = {wchess_draw_timeout_against_material = @DEACTIVATE}
         }
 
         # Draw proposal button, clear any pending draw proposal
@@ -1323,6 +1325,28 @@ wchess_switch_turn = {
 
             var:wchess_opponent = {
                 set_variable = {wchess_game_turn = @ACTIVATE}
+            }
+        }
+
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = wchess_no_timer
+                }
+            }
+            remove_mission = wchess_self_timer
+            activate_mission = wchess_opponent_timer
+            add_days_mission_timeout = {
+                mission = wchess_opponent_timer
+                days = wchess_days_per_move
+            }
+            var:wchess_opponent = {
+                remove_mission = wchess_opponent_timer
+                activate_mission = wchess_self_timer
+                add_days_mission_timeout = {
+                    mission = wchess_self_timer
+                    days = wchess_days_per_move
+                }
             }
         }
     }
@@ -2008,5 +2032,253 @@ wchess_insufficient_material_check = {
             check_variable = {temp_wchess_knight_count > 0}
         }
         set_temp_variable = {temp_wchess_insufficient_material = @DEACTIVATE}
+    }
+}
+
+# Function : wchess_start_game_alone
+# Context : Game Start
+# This function starts a game against self.
+# Input:  none
+# Output: none
+wchess_start_game_alone = {
+    set_country_flag = wchess_start_game
+    set_country_flag = wchess_display_game
+
+    set_variable = {wchess_color = @WHITE}
+    set_variable = {wchess_opponent_color = @BLACK}
+    set_variable = {wchess_opponent = ROOT}
+    set_variable = {wchess_black_player = ROOT}
+    set_variable = {wchess_white_player = ROOT}
+    set_variable = {wchess_game_turn = @ACTIVATE}
+    set_variable = {wchess_play_state = @S_SELECTION}
+
+    set_variable = {wchess_display_draw_button = @ACTIVATE}
+
+    wchess_init_variables = yes
+    wchess_create_board = yes
+
+    if = {
+        limit = {
+            NOT = {
+                has_country_flag = wchess_no_timer
+            }
+        }
+        activate_mission = wchess_self_timer
+        add_days_mission_timeout = {
+            mission = wchess_self_timer
+            days = wchess_days_per_move
+        }
+    }
+}
+
+# Function : wchess_start_game_with_opponent
+# Context : Game Start
+# This function starts a game against the specified opponent.
+# Inputs: THIS.wchess_player_challenger                     - The opponent
+#         wchess_player_challenger.wchess_player_challenged - Self
+#         temp_wchess_init_color                            - Self's color
+# Output: none
+wchess_start_game_with_opponent = {
+    set_temp_variable = {temp_wchess_init_opponent_color = temp_wchess_init_color}
+    add_to_temp_variable = {temp_wchess_init_opponent_color = 1}
+    modulo_temp_variable = {temp_wchess_init_opponent_color = 2}
+
+    if = {
+        limit = {
+            var:wchess_player_challenger = {
+                has_country_flag = wchess_no_timer
+            }
+        }
+        set_country_flag = wchess_no_timer
+    }
+    else = {
+        set_variable = {THIS.wchess_days_per_move = wchess_player_challenger.wchess_days_per_move}
+    }
+
+    set_country_flag = wchess_start_game
+    set_country_flag = wchess_display_game
+
+    set_variable = {wchess_color = temp_wchess_init_color}
+    set_variable = {wchess_opponent_color = temp_wchess_init_opponent_color}
+    set_variable = {wchess_opponent = wchess_player_challenger}
+    set_variable = {wchess_play_state = @S_SELECTION}
+
+    if = {
+        limit = {
+            check_variable = {temp_wchess_init_color = @BLACK}
+        }
+        set_variable = {wchess_black_player = ROOT}
+        set_variable = {wchess_white_player = wchess_player_challenger}
+        set_variable = {wchess_game_turn = @DEACTIVATE}
+        set_variable = {wchess_display_draw_button = @DEACTIVATE}
+
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = wchess_no_timer
+                }
+            }
+            activate_mission = wchess_opponent_timer
+            add_days_mission_timeout = {
+                mission = wchess_opponent_timer
+                days = wchess_days_per_move
+            }
+        }
+    } else = {
+        set_variable = {wchess_black_player = wchess_player_challenger}
+        set_variable = {wchess_white_player = ROOT}
+        set_variable = {wchess_game_turn = @ACTIVATE}
+        set_variable = {wchess_display_draw_button = @ACTIVATE}
+        
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = wchess_no_timer
+                }
+            }
+            activate_mission = wchess_self_timer
+            add_days_mission_timeout = {
+                mission = wchess_self_timer
+                days = wchess_days_per_move
+            }
+        }
+    }
+
+    wchess_init_variables = yes
+    wchess_create_board = yes
+
+    var:wchess_opponent = {
+        set_country_flag = wchess_start_game
+        set_country_flag = wchess_display_game
+
+        set_variable = {wchess_color = temp_wchess_init_opponent_color}
+        set_variable = {wchess_opponent_color = temp_wchess_init_color}
+        set_variable = {wchess_opponent = wchess_player_challenged}
+        set_variable = {wchess_play_state = @S_SELECTION}
+
+        if = {
+            limit = {
+                check_variable = {temp_wchess_init_opponent_color = @BLACK}
+            }
+            set_variable = {wchess_black_player = THIS}
+            set_variable = {wchess_white_player = wchess_player_challenged}
+            set_variable = {wchess_game_turn = @DEACTIVATE}
+            set_variable = {wchess_display_draw_button = @DEACTIVATE}
+
+            if = {
+                limit = {
+                    NOT = {
+                        has_country_flag = wchess_no_timer
+                    }
+                }
+                activate_mission = wchess_opponent_timer
+                add_days_mission_timeout = {
+                    mission = wchess_opponent_timer
+                    days = wchess_days_per_move
+                }
+            }
+        } else = {
+            set_variable = {wchess_black_player = wchess_player_challenged}
+            set_variable = {wchess_white_player = THIS}
+            set_variable = {wchess_game_turn = @ACTIVATE}
+            set_variable = {wchess_display_draw_button = @ACTIVATE}
+
+            if = {
+                limit = {
+                    NOT = {
+                        has_country_flag = wchess_no_timer
+                    }
+                }
+                activate_mission = wchess_self_timer
+                add_days_mission_timeout = {
+                    mission = wchess_self_timer
+                    days = wchess_days_per_move
+                }
+            }
+        }
+
+        wchess_init_variables = yes
+        wchess_create_board = yes
+    }
+}
+
+# Function : wchess_timeout
+# Context : Player
+# This function executes what happens when a player's timer times out.
+# Inputs: none
+# Output: none
+wchess_timeout = {
+    if = {
+        limit = {
+            check_variable = {wchess_color = @WHITE}
+        }
+        set_temp_variable = {temp_wchess_check_color = @BLACK}
+    } else = {
+        set_temp_variable = {temp_wchess_check_color = @WHITE}
+    }
+
+    clear_temp_array = temp_wchess_piece_array
+    resize_temp_array = {
+        array = temp_wchess_piece_array
+        value = 0
+        size = 64
+    }
+    for_each_loop = {
+        array = wchess_pieces_array
+        value = val
+        index = iter
+        set_temp_variable = {temp_wchess_piece_array^iter = val}
+    }
+
+    wchess_insufficient_material_check = yes
+
+    if = {
+        limit = {
+            check_variable = {temp_wchess_insufficient_material = @ACTIVATE}
+        }
+        set_variable = {wchess_draw_timeout_against_material = @ACTIVATE}
+        set_variable = {wchess_game_turn = @DEACTIVATE}
+        set_variable = {wchess_display_draw_button = @DEACTIVATE}
+        var:wchess_opponent = {
+            set_variable = {wchess_draw_timeout_against_material = @ACTIVATE}
+            set_variable = {wchess_game_turn = @DEACTIVATE}
+            set_variable = {wchess_display_draw_button = @DEACTIVATE}
+        }
+    } else = {
+        wchess_resign = yes
+    }
+}
+
+# Function : wchess_resign
+# Context : Player
+# This function executes resignation.
+# Inputs: none
+# Output: none
+wchess_resign = {
+    set_variable = {wchess_game_turn = @DEACTIVATE}
+    set_variable = {wchess_display_draw_button = @DEACTIVATE}
+    if = {
+        limit = {
+            check_variable = {wchess_opponent = THIS}
+        }
+
+        if = {
+            limit = {
+                check_variable = {wchess_color = @WHITE}
+            }
+
+            set_variable = {wchess_victory_black = @ACTIVATE}
+        } else = {
+            set_variable = {wchess_victory_white = @ACTIVATE}
+        }
+    } else = {
+        set_variable = {wchess_defeated = @ACTIVATE}
+        var:wchess_opponent = {
+            set_variable = {wchess_winner = @ACTIVATE}
+            set_variable = {wchess_game_turn = @DEACTIVATE}
+            set_variable = {wchess_display_draw_button = @DEACTIVATE}
+            clear_array = wchess_highlights_array
+            clear_array = wchess_halochecks_array
+        }
     }
 }

@@ -1,0 +1,27 @@
+defined_text = {
+	name = wchess_time_control_text
+	text = {
+		trigger = {
+			var:wchess_player_challenger = {
+				has_country_flag = wchess_no_timer
+			}
+		}
+		localization_key = wchess_no_time_control
+	}
+	text = {
+		localization_key = wchess_daily_game
+	}
+}
+
+defined_text = {
+	name = wchess_against_who
+	text = {
+		trigger = {
+			has_variable = wchess_player_challenged
+		}
+		localization_key = wchess_against_someone_else
+	}
+	text = {
+		localization_key = wchess_against_yourself
+	}
+}
