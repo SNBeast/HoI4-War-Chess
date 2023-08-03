@@ -827,6 +827,8 @@ scripted_gui = {
                     set_variable = {wchess_display_draw_button = @DEACTIVATE}
                     set_variable = {wchess_draw_agreement = @ACTIVATE}
                     set_variable = {wchess_game_turn = @DEACTIVATE}
+                    remove_mission = wchess_self_timer
+                    remove_mission = wchess_opponent_timer
                 } else = {
                     set_variable = {wchess_display_draw_button = @DEACTIVATE}
                     var:wchess_opponent = {
@@ -1048,9 +1050,13 @@ scripted_gui = {
             wchess_draw_accept_button_click = {
                 clr_country_flag = wchess_draw_agreement_received
                 set_variable = {wchess_draw_agreement = @ACTIVATE}
+                remove_mission = wchess_self_timer
+                remove_mission = wchess_opponent_timer
                 var:wchess_opponent = {
                     set_variable = {wchess_draw_agreement = @ACTIVATE}
                     set_variable = {wchess_game_turn = @DEACTIVATE}
+                    remove_mission = wchess_self_timer
+                    remove_mission = wchess_opponent_timer
                 }
             }
 

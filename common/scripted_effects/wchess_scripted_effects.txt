@@ -1125,10 +1125,14 @@ wchess_switch_turn = {
 
                 set_variable = {wchess_game_turn = @DEACTIVATE}
                 set_variable = {wchess_display_draw_button = @DEACTIVATE}
+                remove_mission = wchess_self_timer
+                remove_mission = wchess_opponent_timer
             } else = {
                 set_variable = {wchess_winner = @ACTIVATE}
                 set_variable = {wchess_game_turn = @DEACTIVATE}
                 set_variable = {wchess_display_draw_button = @DEACTIVATE}
+                remove_mission = wchess_self_timer
+                remove_mission = wchess_opponent_timer
                 
                 clear_temp_array = temp_wchess_piece_array
                 resize_temp_array = {
@@ -1154,6 +1158,8 @@ wchess_switch_turn = {
                     set_variable = {wchess_defeated = @ACTIVATE}
                     set_variable = {wchess_game_turn = @DEACTIVATE}
                     set_variable = {wchess_display_draw_button = @DEACTIVATE}
+                    remove_mission = wchess_self_timer
+                    remove_mission = wchess_opponent_timer
                 }
             }
         }
@@ -1186,11 +1192,15 @@ wchess_switch_turn = {
             set_variable = {wchess_draw_stalemate = @ACTIVATE}
             set_variable = {wchess_game_turn = @DEACTIVATE}
             set_variable = {wchess_display_draw_button = @DEACTIVATE}
+            remove_mission = wchess_self_timer
+            remove_mission = wchess_opponent_timer
 
             var:wchess_opponent = {
                 set_variable = {wchess_draw_stalemate = @ACTIVATE}
                 set_variable = {wchess_game_turn = @DEACTIVATE}
                 set_variable = {wchess_display_draw_button = @DEACTIVATE} 
+                remove_mission = wchess_self_timer
+                remove_mission = wchess_opponent_timer
             }
         }
     }
@@ -1213,11 +1223,14 @@ wchess_switch_turn = {
         set_variable = {wchess_draw_50_moves = @ACTIVATE}
         set_variable = {wchess_game_turn = @DEACTIVATE}
         set_variable = {wchess_display_draw_button = @DEACTIVATE} 
-
+        remove_mission = wchess_self_timer
+        remove_mission = wchess_opponent_timer
         var:wchess_opponent = {
             set_variable = {wchess_draw_50_moves = @ACTIVATE}
             set_variable = {wchess_game_turn = @DEACTIVATE}
             set_variable = {wchess_display_draw_button = @DEACTIVATE} 
+            remove_mission = wchess_self_timer
+            remove_mission = wchess_opponent_timer
         }
     } else_if = {
         limit = {
@@ -1262,10 +1275,14 @@ wchess_switch_turn = {
         set_variable = {wchess_draw_material = @ACTIVATE}
         set_variable = {wchess_game_turn = @DEACTIVATE}
         set_variable = {wchess_display_draw_button = @DEACTIVATE}
+        remove_mission = wchess_self_timer
+        remove_mission = wchess_opponent_timer
         var:wchess_opponent = {
             set_variable = {wchess_draw_material = @ACTIVATE}
             set_variable = {wchess_game_turn = @DEACTIVATE}
             set_variable = {wchess_display_draw_button = @DEACTIVATE} 
+            remove_mission = wchess_self_timer
+            remove_mission = wchess_opponent_timer
         }
     }
 
@@ -2015,7 +2032,7 @@ wchess_insufficient_material_check = {
                         check_variable = {piece_value = @EMPTY}
                     }
                 }
-    
+
                 set_temp_variable = {temp_wchess_insufficient_material = @DEACTIVATE}
                 set_temp_variable = {break = 1}
             }
@@ -2239,11 +2256,16 @@ wchess_timeout = {
         set_variable = {wchess_draw_timeout_against_material = @ACTIVATE}
         set_variable = {wchess_game_turn = @DEACTIVATE}
         set_variable = {wchess_display_draw_button = @DEACTIVATE}
+        remove_mission = wchess_self_timer
+        remove_mission = wchess_opponent_timer
         var:wchess_opponent = {
             set_variable = {wchess_draw_timeout_against_material = @ACTIVATE}
             set_variable = {wchess_game_turn = @DEACTIVATE}
             set_variable = {wchess_display_draw_button = @DEACTIVATE}
+            remove_mission = wchess_self_timer
+            remove_mission = wchess_opponent_timer
         }
+        
     } else = {
         wchess_resign = yes
     }
@@ -2280,5 +2302,12 @@ wchess_resign = {
             clear_array = wchess_highlights_array
             clear_array = wchess_halochecks_array
         }
+    }
+
+    remove_mission = wchess_self_timer
+    remove_mission = wchess_opponent_timer
+    var:wchess_opponent = {
+        remove_mission = wchess_self_timer
+        remove_mission = wchess_opponent_timer
     }
 }
