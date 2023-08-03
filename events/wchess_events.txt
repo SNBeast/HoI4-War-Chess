@@ -39,12 +39,17 @@ country_event = {
     is_triggered_only = yes
     timeout_days = 5
 
+    immediate = {
+        set_variable = {THIS.wchess_days_per_move = FROM.wchess_days_per_move}
+    }
+
     option = {
         name = wchess_events.1.a
         var:wchess_player_challenger = {
             country_event = wchess_events.2
         }
         #clr_country_flag = wchess_in_chess_pool
+        clear_variable = THIS.wchess_days_per_move
     }
     option = {
         name = wchess_events.1.b

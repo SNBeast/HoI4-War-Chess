@@ -48,7 +48,7 @@ wchess_events.3.c:0 "30 days per move."
 wchess_events.3.d:0 "No time limit."
 
 wchess_no_time_control:0 "an untimed game"
-wchess_daily_game:0 "a game with [?ROOT.wchess_player_challenger.wchess_days_per_move] days per move"
+wchess_daily_game:0 "a game with [?FROM.wchess_days_per_move] days per move"
 
 wchess_against_someone_else:0 "[?ROOT.wchess_player_challenged.GetName]"
 wchess_against_yourself:0 "yourself"
