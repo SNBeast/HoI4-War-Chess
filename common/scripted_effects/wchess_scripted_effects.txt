@@ -2100,18 +2100,6 @@ wchess_start_game_with_opponent = {
     add_to_temp_variable = {temp_wchess_init_opponent_color = 1}
     modulo_temp_variable = {temp_wchess_init_opponent_color = 2}
 
-    if = {
-        limit = {
-            var:wchess_player_challenger = {
-                has_country_flag = wchess_no_timer
-            }
-        }
-        set_country_flag = wchess_no_timer
-    }
-    else = {
-        set_variable = {THIS.wchess_days_per_move = wchess_player_challenger.wchess_days_per_move}
-    }
-
     set_country_flag = wchess_start_game
     set_country_flag = wchess_display_game
 

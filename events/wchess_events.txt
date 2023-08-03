@@ -40,7 +40,16 @@ country_event = {
     timeout_days = 5
 
     immediate = {
-        set_variable = {THIS.wchess_days_per_move = FROM.wchess_days_per_move}
+        if = {
+            limit = {
+                var:wchess_player_challenger = {
+                    has_country_flag = wchess_no_timer
+                }
+            }
+            set_country_flag = wchess_no_timer
+        } else = {
+            set_variable = {THIS.wchess_days_per_move = FROM.wchess_days_per_move}
+        }
     }
 
     option = {
@@ -49,6 +58,7 @@ country_event = {
             country_event = wchess_events.2
         }
         #clr_country_flag = wchess_in_chess_pool
+        clr_country_flag = wchess_no_timer
         clear_variable = THIS.wchess_days_per_move
     }
     option = {
