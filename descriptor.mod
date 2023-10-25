@@ -1,5 +1,7 @@
-name="War Chess"
+name="Hearts of Minecraft: War Chess"
 picture="thumbnail.png"
-supported_version="1.12.*"
-path="mod/HoI4-War-Chess"
-remote_file_id="2936449085"
+dependencies={
+	"Hearts of Minecraft: Echoes of the East"
+}
+supported_version="1.13.*"
+remote_file_id="3014121409"
